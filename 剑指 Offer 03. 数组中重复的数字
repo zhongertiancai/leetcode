@@ -1,0 +1,38 @@
+//剑指 Offer 03. 数组中重复的数字
+//解法1：用hash表示如果找到重复插入的就表示有相同的
+class Solution {
+public:
+    int findRepeatNumber(vector<int>& nums) {
+        map<int, int> a;
+        for (int i = 0;i < nums.size();i++) {
+            if (a.count(nums[i]) != 0) {
+                a[nums[i]] = 1;
+            }
+            else {
+                return nums[i];
+            }
+        }
+        return 0;
+    }
+};
+//解法2：原地变换，把自己的数字转到自己按顺序来说本来应该在的位置，如果有位置上已经有了则已重复
+//错误
+//1.一开始没用while，然而换进来后不能就直接往下移指针了
+//2.nums[i]是一个变化量，得先放到temp里，后期要使用temp
+using std::string;
+class Solution {
+public:
+    int findRepeatNumber(vector<int>& nums) {
+        for (int i=0;i < nums.size();i++) {
+            while (nums[i] != i) {
+                if (nums[i] == nums[nums[i]]) {
+                    return nums[i];
+                }
+                int temp = nums[i];
+                nums[i] = nums[temp];
+                nums[temp] = temp;
+            }
+        }
+        return -1;
+    }
+};
